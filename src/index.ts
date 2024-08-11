@@ -56,7 +56,7 @@ const KEY = { ESC: 27, SPACE: 32, LEFT: 37, UP: 38, RIGHT: 39, DOWN: 40 },
   nu = 5; // width/height of upcoming preview (in blocks)
 
 //-------------------------------------------------------------------------
-// game constiables (initialized during reset)
+// game variables (initialized during reset)
 //-------------------------------------------------------------------------
 
 let dx: number,
@@ -162,7 +162,7 @@ function run() {
   }
 
   resize(); // setup all our sizing information
-  reset(); // reset the per-game constiables
+  reset(); // reset the per-game variables
   frame(); // start the first frame
 }
 
