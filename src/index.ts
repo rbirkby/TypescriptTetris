@@ -1,4 +1,4 @@
-type Tetrimino = {
+type Tetromino = {
   size: number;
   blocks: number[];
   color: Color;
@@ -7,7 +7,7 @@ type Tetrimino = {
 type DIR = number;
 
 type Piece = {
-  type: Tetrimino;
+  type: Tetromino;
   dir: DIR;
   x: number;
   y: number;
@@ -61,7 +61,7 @@ const KEY = { ESC: 27, SPACE: 32, LEFT: 37, UP: 38, RIGHT: 39, DOWN: 40 },
 
 let dx: number,
   dy: number, // pixel size of a single tetris block
-  blocks: (Tetrimino | undefined)[][], // 2 dimensional array (nx*ny) representing tetris court - either empty block or occupied by a 'piece'
+  blocks: (Tetromino | undefined)[][], // 2 dimensional array (nx*ny) representing tetris court - either empty block or occupied by a 'piece'
   actions: DIR[], // queue of user actions (inputs)
   playing: boolean, // true|false - game is in progress
   dt: number, // time since starting this game
@@ -88,19 +88,19 @@ let dx: number,
 //
 //-------------------------------------------------------------------------
 
-const i: Tetrimino = { size: 4, blocks: [0x0f00, 0x2222, 0x00f0, 0x4444], color: 'cyan' };
-const j: Tetrimino = { size: 3, blocks: [0x44c0, 0x8e00, 0x6440, 0x0e20], color: 'blue' };
-const l: Tetrimino = { size: 3, blocks: [0x4460, 0x0e80, 0xc440, 0x2e00], color: 'orange' };
-const o: Tetrimino = { size: 2, blocks: [0xcc00, 0xcc00, 0xcc00, 0xcc00], color: 'yellow' };
-const s: Tetrimino = { size: 3, blocks: [0x06c0, 0x8c40, 0x6c00, 0x4620], color: 'green' };
-const t: Tetrimino = { size: 3, blocks: [0x0e40, 0x4c40, 0x4e00, 0x4640], color: 'purple' };
-const z: Tetrimino = { size: 3, blocks: [0x0c60, 0x4c80, 0xc600, 0x2640], color: 'red' };
+const i: Tetromino = { size: 4, blocks: [0x0f00, 0x2222, 0x00f0, 0x4444], color: 'cyan' };
+const j: Tetromino = { size: 3, blocks: [0x44c0, 0x8e00, 0x6440, 0x0e20], color: 'blue' };
+const l: Tetromino = { size: 3, blocks: [0x4460, 0x0e80, 0xc440, 0x2e00], color: 'orange' };
+const o: Tetromino = { size: 2, blocks: [0xcc00, 0xcc00, 0xcc00, 0xcc00], color: 'yellow' };
+const s: Tetromino = { size: 3, blocks: [0x06c0, 0x8c40, 0x6c00, 0x4620], color: 'green' };
+const t: Tetromino = { size: 3, blocks: [0x0e40, 0x4c40, 0x4e00, 0x4640], color: 'purple' };
+const z: Tetromino = { size: 3, blocks: [0x0c60, 0x4c80, 0xc600, 0x2640], color: 'red' };
 
 //------------------------------------------------
 // do the bit manipulation and iterate through each
 // occupied block (x,y) for a given piece
 //------------------------------------------------
-function eachblock(type: Tetrimino, x: number, y: number, dir: DIR, fn: (x: number, y: number) => void) {
+function eachblock(type: Tetromino, x: number, y: number, dir: DIR, fn: (x: number, y: number) => void) {
   let bit,
     row = 0,
     col = 0;
@@ -119,7 +119,7 @@ function eachblock(type: Tetrimino, x: number, y: number, dir: DIR, fn: (x: numb
 //-----------------------------------------------------
 // check if a piece can fit into a position in the grid
 //-----------------------------------------------------
-function occupied(type: Tetrimino, x: number, y: number, dir: DIR) {
+function occupied(type: Tetromino, x: number, y: number, dir: DIR) {
   let result = false;
   eachblock(type, x, y, dir, function (x, y) {
     if (x < 0 || x >= nx || y < 0 || y >= ny || getBlock(x, y)) result = true;
@@ -127,7 +127,7 @@ function occupied(type: Tetrimino, x: number, y: number, dir: DIR) {
   return result;
 }
 
-function unoccupied(type: Tetrimino, x: number, y: number, dir: DIR) {
+function unoccupied(type: Tetromino, x: number, y: number, dir: DIR) {
   return !occupied(type, x, y, dir);
 }
 
@@ -135,7 +135,7 @@ function unoccupied(type: Tetrimino, x: number, y: number, dir: DIR) {
 // start with 4 instances of each piece and
 // pick randomly until the 'bag is empty'
 //-----------------------------------------
-let pieces: Tetrimino[] = [];
+let pieces: Tetromino[] = [];
 function randomPiece(): Piece {
   if (pieces.length == 0) pieces = [i, i, i, i, j, j, j, j, l, l, l, l, o, o, o, o, s, s, s, s, t, t, t, t, z, z, z, z];
   const type = pieces.splice(random(0, pieces.length - 1), 1)[0];
@@ -262,7 +262,7 @@ function addRows(n: number) {
 function getBlock(x: number, y: number) {
   return blocks && blocks[x] ? blocks[x]?.[y] : null;
 }
-function setBlock(x: number, y: number, type?: Tetrimino | null) {
+function setBlock(x: number, y: number, type?: Tetromino | null) {
   blocks[x] = blocks[x] || [];
   blocks[x]![y] = type === null ? undefined : type;
   invalidate();
@@ -476,7 +476,7 @@ function drawRows() {
   }
 }
 
-function drawPiece(ctx: CanvasRenderingContext2D, type: Tetrimino, x: number, y: number, dir: DIR) {
+function drawPiece(ctx: CanvasRenderingContext2D, type: Tetromino, x: number, y: number, dir: DIR) {
   eachblock(type, x, y, dir, function (x: number, y: number) {
     drawBlock(ctx, x, y, type.color);
   });
