@@ -2,7 +2,7 @@
 
 Classic Tetris game in TypeScript.
 
-Tetris port by Richard Birkby
+TypeScript port by Richard Birkby, 2024
 
 Original JavaScript [implementation](https://github.com/jakesgordon/javascript-tetris) - [Jake Gordon](https://twitter.com/jakesgordon)
 
