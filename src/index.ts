@@ -38,9 +38,6 @@ function timestamp() {
 function random(min: number, max: number) {
   return min + Math.random() * (max - min);
 }
-function randomChoice(choices: []) {
-  return choices[Math.round(random(0, choices.length - 1))];
-}
 
 //-------------------------------------------------------------------------
 // game constants
@@ -278,7 +275,7 @@ function clearActions() {
   actions = [];
 }
 function setCurrentPiece(piece: Piece) {
-  current = piece || randomPiece();
+  current = piece;
   invalidate();
 }
 function setNextPiece(piece?: Piece) {
